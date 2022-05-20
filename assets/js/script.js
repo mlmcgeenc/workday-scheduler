@@ -65,6 +65,7 @@ var saveTasks = function () {
 	localStorage.setItem('tasks', JSON.stringify(tasks));
 };
 
+// get tasks from local storage and display them
 var loadTasks = function () {
 	tasks = JSON.parse(localStorage.getItem('tasks'));
 	if (!tasks) {
