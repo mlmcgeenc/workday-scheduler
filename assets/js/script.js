@@ -4,7 +4,6 @@ document.getElementById('currentDay').textContent = moment().format('MMMM, dddd 
 // color code blocks for past / present / future status
 var evaluateCurrentTime = function () {
 	$('.time-block .hour').each(function (index, hour) {
-		console.log('evaluating time');
 		var currentTime = moment().format('h A');
 		var hourText = $(hour).text().trim();
 		var timeOfEvent = moment(hourText, 'h a');
@@ -22,7 +21,7 @@ var evaluateCurrentTime = function () {
 };
 
 setInterval(function () {
-	evaluateCurrentTime(hour);
+	evaluateCurrentTime();
 }, 1000 * 60);
 
 // clicking on a time block allows the user to enter an event title
