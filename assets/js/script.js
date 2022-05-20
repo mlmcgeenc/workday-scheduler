@@ -1,5 +1,6 @@
-// color code blocks for past / present / future
+// color code blocks for past / present / future status
 var evaluateCurrentTime = function (hour) {
+    console.log("evaluating time")
 	var currentTime = moment().format("h A");
 	var hourText = $(hour).text().trim();
 	var timeOfEvent = moment(hourText, "h a");
@@ -19,12 +20,10 @@ setInterval(function () {
 	$(".time-block .hour").each(function (index, hour) {
 		evaluateCurrentTime(hour);
 	});
-}, 1000);
-// }, 1000 * 60 * 60);
+}, 1000 * 60);
 
 // clicking on a time block allows the user to enter an event title
 $(".container .description").on("click", function (event) {
-	console.log($(this).parent().attr("id"));
 	var text = $(this).children("p").text().trim();
 	var textInput = $("<textarea>").addClass("formControl").val(text).select();
 	$(this).children("p").replaceWith(textInput);
@@ -32,11 +31,63 @@ $(".container .description").on("click", function (event) {
 });
 
 $(".container .description").on("blur", "textarea", function () {
-    console.log(this)
 	var text = $(this).val().trim();
 	var taskP = $("<p>").text(text);
-    $(this).removeClass("formControl");
+	$(this).removeClass("formControl");
 	$(this).replaceWith(taskP);
 });
 
 // save event title into local storage
+var tasks = {
+	nineAm: "",
+	tenAm: "",
+	elevenAm: "",
+	twelvePm: "",
+	onePm: "",
+	twoPm: "",
+	threePm: "",
+	fourPm: "",
+	fivePm: "",
+};
+
+$(".saveBtn").click(function () {
+	var taskHour = $(this).parent().attr("id");
+	var taskTitle = $(this).parent().children(".description").text().trim();
+
+	tasks[taskHour] = taskTitle;
+	saveTasks();
+});
+
+var saveTasks = function () {
+	localStorage.setItem("tasks", JSON.stringify(tasks));
+};
+
+var loadTasks = function () {
+	tasks = JSON.parse(localStorage.getItem("tasks"));
+	if (!tasks) {
+		tasks = {
+			nineAm: "",
+			tenAm: "",
+			elevenAm: "",
+			twelvePm: "",
+			onePm: "",
+			twoPm: "",
+			threePm: "",
+			fourPm: "",
+			fivePm: "",
+		};
+	}
+
+	$(".container")
+		.children(".row")
+		.each(function () {
+			idElm = $(this).attr("id");
+
+			if (tasks.hasOwnProperty($(this).attr("id"))) {
+				$(this).children(".description").children("p").text(tasks[idElm]);
+			}
+		});
+};
+
+loadTasks();
+evaluateCurrentTime();
