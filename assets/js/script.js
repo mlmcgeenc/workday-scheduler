@@ -1,3 +1,6 @@
+// display current day on page
+document.getElementById('currentDay').textContent = moment().format('MMMM, dddd Do')
+
 // color code blocks for past / present / future status
 var evaluateCurrentTime = function () {
 	$('.time-block .hour').each(function (index, hour) {
